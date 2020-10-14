@@ -17,7 +17,7 @@ class TasksController < ApplicationController
 
   def update
     @task.update!(task_params)
-    redirect_to tasks_url, notice: "タスク「#{task.name}」を更新しました。"
+    redirect_to tasks_url, notice: "タスク「#{@task.name}」を更新しました。"
   end
 
   def destroy
@@ -34,6 +34,7 @@ class TasksController < ApplicationController
     end
 
     if @task.save
+      TaskMailer.creation_email(@task).deliver_now
       redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
     else
       render :new
